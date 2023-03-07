@@ -905,7 +905,7 @@
           node.muted = sound._muted || self._muted || Howler._muted || node.muted;
           node.volume = sound._volume * Howler.volume();
           node.playbackRate = sound._rate;
-          node.setSinkId(sound._sinkId);
+          node.setSinkId(self._sinkId);
 
           // Some browsers will throw an error if this is called without user interaction.
           try {
