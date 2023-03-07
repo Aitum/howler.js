@@ -905,7 +905,10 @@
           node.muted = sound._muted || self._muted || Howler._muted || node.muted;
           node.volume = sound._volume * Howler.volume();
           node.playbackRate = sound._rate;
-          node.setSinkId(self._sinkId);
+
+          node.setSinkId(self._sinkId).catch(function (e) {
+            self._emit('playerror', sound._id, 'Error setting sink ID');
+          });
 
           // Some browsers will throw an error if this is called without user interaction.
           try {
