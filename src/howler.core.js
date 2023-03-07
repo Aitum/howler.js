@@ -590,6 +590,7 @@
       self._sprite = o.sprite || {};
       self._src = (typeof o.src !== 'string') ? o.src : [o.src];
       self._volume = o.volume !== undefined ? o.volume : 1;
+      self._sinkId = (typeof o.sinkId !== 'undefined') ? o.sinkId : 'default';
       self._xhr = {
         method: o.xhr && o.xhr.method ? o.xhr.method : 'GET',
         headers: o.xhr && o.xhr.headers ? o.xhr.headers : null,
@@ -862,6 +863,9 @@
           var vol = (sound._muted || self._muted) ? 0 : sound._volume;
           node.gain.setValueAtTime(vol, Howler.ctx.currentTime);
           sound._playStart = Howler.ctx.currentTime;
+          if (self._sinkId) {
+            Howler.ctx.setSinkId(self._sinkId === 'default' ? '' : self._sinkId);
+          }
 
           // Play the sound using the supported method.
           if (typeof node.bufferSource.start === 'undefined') {
@@ -901,6 +905,7 @@
           node.muted = sound._muted || self._muted || Howler._muted || node.muted;
           node.volume = sound._volume * Howler.volume();
           node.playbackRate = sound._rate;
+          node.setSinkId(sound._sinkId);
 
           // Some browsers will throw an error if this is called without user interaction.
           try {
